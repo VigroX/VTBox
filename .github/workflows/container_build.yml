@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-	env:
+    env:
       IMAGE_NAME: ${{ github.repository }}
       REGISTRY: ghcr.io
     permissions:
