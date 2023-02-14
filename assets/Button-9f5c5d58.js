@@ -1,0 +1,1 @@
+import{_ as n,a as t,c as e,b as o,p as c}from"./index-a821dcdc.js";const a="btn_arHvb9",l={btn:a},r={};function _(s,b){return t(),e("button",{class:c(s.$style.btn)},[o(s.$slots,"default")],2)}const u={$style:l},d=n(r,[["render",_],["__cssModules",u]]);export{d as _};
