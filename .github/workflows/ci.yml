@@ -33,14 +33,12 @@ jobs:
           start: pnpm run preview
           browser: chrome
           record: false
-          group: "E2E tests"
 
       - name: Run Unit tests
         uses: cypress-io/github-action@v5
         with:
           install: false
           component: true
-          group: "Unit tests"
   build:
     runs-on: ${{ matrix.os }}
     needs: test
