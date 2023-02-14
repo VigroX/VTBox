@@ -37,7 +37,9 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           runTests: false
-          build: pnpm run build --base="/${{ github.event.repository.name }}/"
+
+      - name: Build
+        run: pnpm run build --base="/${{ github.event.repository.name }}/"
 
       - name: Save build folder
         uses: actions/upload-artifact@v3
