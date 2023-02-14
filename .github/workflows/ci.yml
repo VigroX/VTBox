@@ -31,17 +31,18 @@ jobs:
         with:
           build: pnpm run build
           start: pnpm run test:e2e
-          wait-on: 'http://localhost:4173'
-          wait-on-timeout: 120
+          wait-on: 'http://127.0.0.1:4173'
           browser: chrome
           record: false
+          spec: |
+            cypress/e2e/**/*.spec.js
+            cypress/e2e/**/*.cy.js
 
       - name: Run Unit tests
         uses: cypress-io/github-action@v5
         with:
           install: false
           component: true
-          start: pnpm run test:unit
   build:
     runs-on: ${{ matrix.os }}
     needs: test
