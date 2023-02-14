@@ -10,68 +10,89 @@ on:
       - main
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache
-          key: cypress-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org/
-          cache: pnpm
-
-      - run: pnpm install
-
-      - name: Run E2E tests
-        uses: cypress-io/github-action@v5
-        with:
-          browser: chrome
-          build: pnpm run build
-          start: pnpm run test:e2e
-
-      - name: Run unit tests
-        uses: cypress-io/github-action@v5
-        with:
-          install: false
-          component: true
   build:
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
     strategy:
       matrix:
         node_version: [16.x]
         os: [ubuntu-latest]
-      fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - uses: pnpm/action-setup@v2
         with:
           version: 7
 
-      - name: Set node version to ${{ matrix.node_version }}
+      - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
           cache: pnpm
 
-      - name: Install
+      - name: Install node modules
         run: pnpm install
 
-      - name: Build
-        run: pnpm run build --base="/${{ github.event.repository.name }}/"
+      - name: Cypress install
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+          build: pnpm run build --base="/${{ github.event.repository.name }}/"
 
-      - name: Deploy
+      - name: Save build folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          if-no-files-found: error
+          path: dist
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2, 3, 4, 5]
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v3
+
+      - name: Download the build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: dist
+
+      - name: Run E2E tests
+        uses: cypress-io/github-action@v5
+        with:
+          install: false
+          start: pnpm run test:e2e
+          wait-on: 'http://localhost:4173'
+          wait-on-timeout: 120
+          browser: chrome
+          record: false
+          parallel: true
+          group: 'E2E - Chrome'
+
+      - name: Run Unit tests
+        uses: cypress-io/github-action@v5
+        with:
+          install: false
+          component: true
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download the build folders
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: dist
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -87,7 +108,8 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Set image name to lowercase
         run: |
