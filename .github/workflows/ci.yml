@@ -144,7 +144,7 @@ jobs:
         with:
           release-type: node
           package-name: VTBox
-          prerelease: true
+          prerelease: false
           bump-minor-pre-major: true
           bump-patch-for-minor-pre-major: true
       - uses: actions/checkout@v3
