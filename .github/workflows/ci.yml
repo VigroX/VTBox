@@ -22,7 +22,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2
         with:
-          version: 7
+          version: latest
 
       - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v3
@@ -56,15 +56,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
       - name: Download the build folders
         uses: actions/download-artifact@v3
         with:
           name: build
           path: dist
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
+      - name: Install node modules
+        run: pnpm install
 
       - name: Run E2E tests
         uses: cypress-io/github-action@v5
