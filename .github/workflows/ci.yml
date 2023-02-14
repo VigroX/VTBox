@@ -33,12 +33,14 @@ jobs:
           start: pnpm run preview
           browser: chrome
           record: false
+          group: "E2E tests"
 
       - name: Run Unit tests
         uses: cypress-io/github-action@v5
         with:
           install: false
           component: true
+          group: "Unit tests"
   build:
     runs-on: ${{ matrix.os }}
     needs: test
@@ -66,7 +68,12 @@ jobs:
       - name: Build
         run: pnpm run build --base="/${{ github.event.repository.name }}/"
 
-      - name: Deploy to GitHub Pages
+      - name: Link 404.html to index.html (for GitHub Pages)
+        run: |
+          cd dist
+          ln -s index.html 404.html
+
+      - name: Deploy to GitHub Pages  
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
