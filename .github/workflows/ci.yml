@@ -10,8 +10,40 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install node modules
+        run: pnpm install
+
+      - name: Run E2E tests
+        uses: cypress-io/github-action@v5
+        with:
+          build: pnpm run build
+          start: pnpm run test:e2e
+          wait-on: 'http://localhost:4173'
+          wait-on-timeout: 120
+          browser: chrome
+          record: false
+
+      - name: Run Unit tests
+        uses: cypress-io/github-action@v5
+        with:
+          install: false
+          component: true
   build:
     runs-on: ${{ matrix.os }}
+    needs: test
     strategy:
       matrix:
         node_version: [16.x]
@@ -30,73 +62,11 @@ jobs:
           node-version: ${{ matrix.node_version }}
           cache: pnpm
 
-      - name: Cypress install
-        uses: cypress-io/github-action@v5
-        with:
-          runTests: false
-
       - name: Install node modules
         run: pnpm install
 
       - name: Build
         run: pnpm run build --base="/${{ github.event.repository.name }}/"
-
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          if-no-files-found: error
-          path: dist
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: dist
-
-      - name: Install node modules
-        run: pnpm install
-
-      - name: Run E2E tests
-        uses: cypress-io/github-action@v5
-        with:
-          install: false
-          start: pnpm run test:e2e
-          wait-on: 'http://localhost:4173'
-          wait-on-timeout: 120
-          browser: chrome
-          record: false
-
-      - name: Run Unit tests
-        uses: cypress-io/github-action@v5
-        with:
-          install: false
-          component: true
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Download the build folders
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
