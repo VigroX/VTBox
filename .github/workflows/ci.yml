@@ -27,14 +27,24 @@ jobs:
         with:
           version: latest
 
-      - name: Install node modules
+      - name: Cache Cypress binary
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache
+          key: cypress-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm install
 
       - name: Run E2E tests
         uses: cypress-io/github-action@v5
         with:
           build: pnpm run build
-          start: pnpm run preview
+          start: pnpm run preview --port 3000
+          wait-on: 'http://localhost:3000'
           browser: chrome
           record: false
 
@@ -64,7 +74,7 @@ jobs:
           node-version: ${{ matrix.node_version }}
           cache: pnpm
 
-      - name: Install node modules
+      - name: Install Dependencies
         run: pnpm install
 
       - name: Build
