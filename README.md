@@ -1,3 +1,5 @@
+![ci](https://github.com/VigroX/VTBox/actions/workflows/ci.yml/badge.svg)
+
 # VTBox
 
 - A toolbox built on Vue 3 that contains useful tools.
