@@ -45,6 +45,7 @@ jobs:
           build: pnpm run build
           start: pnpm run preview --port 3000
           wait-on: 'http://localhost:3000'
+          config: baseUrl=http://localhost:3000
           browser: chrome
           record: false
 
