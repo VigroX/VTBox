@@ -21,6 +21,8 @@ useDark({
 </template>
 
 <style>
+@import '@/assets/main.css';
+
 header {
 	line-height: 1.5;
 	max-height: 100vh;

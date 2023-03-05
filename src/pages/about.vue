@@ -5,10 +5,6 @@ const isDark = useDark({
 	storageKey: 'theme',
 })
 const toggleDark = useToggle(isDark)
-
-function onEnd(value) {
-	store.value = value;
-}
 </script>
 
 <template>
@@ -20,7 +16,7 @@ function onEnd(value) {
 		<BaseButton @click="useCounter.increment">Increment</BaseButton>
 	</div>
 	<div :style="$style.dragcontainer">
-		<DragBox v-bind="store" :class="$style.dragbox" @end="onEnd" v-slot="{ setRef }">
+		<DragBox v-bind="store" :class="$style.dragbox" @end="(ev) => store = ev" v-slot="{ setRef }">
 			<div :ref="setRef" :class="$style.draggable"></div>
 			<p>This is a test</p>
 		</DragBox>
