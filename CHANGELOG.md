@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/VigroX/VTBox/compare/v0.1.1...v0.1.2) (2023-03-05)
+
+
+### Miscellaneous Chores
+
+* release 0.1.2 ([167435e](https://github.com/VigroX/VTBox/commit/167435e39048d1180691b7bdc945794f8f2b8d19))
+
 ## 0.1.1 (2023-02-14)
 
 
