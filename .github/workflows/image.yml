@@ -1,19 +1,24 @@
 name: Build container image
 
 on:
-  workflow_run:
-    workflows:
-      - CI
-    types:
-      - completed
-
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        default: 'latest'
+  push:
+    tags:
+      - 'v*'
 jobs:
   build:
     name: Build image
     runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
     env:
       IMAGE_NAME: ${{ github.repository }}
       REGISTRY: ghcr.io
+      VERSION: ${{ github.event.inputs.version }}
     permissions:
       contents: read
       packages: write
@@ -27,7 +32,8 @@ jobs:
 
       - name: Get the tag version
         id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >>${GITHUB_ENV}
 
       - name: Buildah Action
         id: build-image

@@ -4,7 +4,13 @@ on:
   push:
     branches:
       - main
-
+    paths:
+      - 'src/**'
+      - 'cypress/**'
+      - 'pnpm-lock.yaml'
+      - '*.json'
+      - '*.yml'
+      - '*.js'
   pull_request:
     branches:
       - main
