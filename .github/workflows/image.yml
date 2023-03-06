@@ -33,14 +33,14 @@ jobs:
       - name: Get the tag version for the latest tag
         id: get_version
         if: ${{ env.VERSION == 'latest' }}
-        run: echo "VERSION=$(git describe --tags --always --abbrev=0)" >> $GITHUB_OUTPUT
+        run: echo "VERSION_TAG=$(git describe --tags --always --abbrev=0)" >>${GITHUB_ENV}
 
       - name: Buildah Action
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           image: ${{ env.IMAGE_NAME_LC }}
-          tags: latest ${{ github.sha }} ${{ env.VERSION }}
+          tags: latest ${{ github.sha }} ${{ env.VERSION_TAG }}
           labels: |
             github.sha=${{ github.sha }}
             image.version=${{ env.VERSION }}
