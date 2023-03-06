@@ -8,8 +8,8 @@ const toggleDark = useToggle(isDark)
 </script>
 
 <template>
-	<div class="about">
-		<h1>This is an about page</h1>
+	<div class="dev">
+		<h1>Dev page</h1>
 		<p>Dark mode: {{ isDark }}</p>
 		<BaseButton @click="toggleDark()">Toggle dark mode</BaseButton>
 		<p>{{ useCounter.count }} / {{ useCounter.doubleCount }}</p>
@@ -18,7 +18,7 @@ const toggleDark = useToggle(isDark)
 	<div :style="$style.dragcontainer">
 		<DragBox v-bind="store" :class="$style.dragbox" @end="(ev) => store = ev" v-slot="{ setRef }">
 			<div :ref="setRef" :class="$style.draggable"></div>
-			<p>This is a test</p>
+			<p>This is a dialog</p>
 		</DragBox>
 	</div>
 </template>
