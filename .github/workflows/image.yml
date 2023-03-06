@@ -40,10 +40,10 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: ${{ env.IMAGE_NAME_LC }}
-          tags: latest ${{ github.sha }} ${{ steps.get_version.outputs.VERSION }}
+          tags: latest ${{ github.sha }} ${{ env.VERSION }}
           labels: |
             github.sha=${{ github.sha }}
-            image.version=${{ steps.get_version.outputs.VERSION }}
+            image.version=${{ env.VERSION }}
           containerfiles: |
             ./Containerfile
 
