@@ -1,1 +1,0 @@
-import{_ as n,o as t,c as e,q as o,n as c}from"./index-f4199718.js";const l="btn_arHvb9",r={btn:l},_={};function a(s,b){return t(),e("button",{class:c(s.$style.btn)},[o(s.$slots,"default")],2)}const u={$style:r},f=n(_,[["render",a],["__cssModules",u]]);export{f as _};
