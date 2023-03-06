@@ -5,7 +5,7 @@ on:
     inputs:
       version:
         description: 'Version'
-        required: true
+        required: false
         default: 'latest'
   push:
     tags:
@@ -32,8 +32,8 @@ jobs:
 
       - name: Get the tag version
         id: get_version
-        if: ${{ github.event_name != 'workflow_dispatch' }}
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >>${GITHUB_ENV}
+        if: ${{ env.VERSION == 'latest' }}
+        run: echo "VERSION=${GITHUB_REF##*/}" >>${GITHUB_ENV}
 
       - name: Buildah Action
         id: build-image
