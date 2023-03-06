@@ -16,6 +16,7 @@
 ## Docker official image
 
 - Run: `docker run -dt -p 8080:80 --rm --name vtbox ghcr.io/vigrox/vtbox:latest`
+- Update: `docker pull ghcr.io/vigrox/vtbox:latest`
 
 ## Docker own container
 
