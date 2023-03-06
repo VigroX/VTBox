@@ -7,9 +7,6 @@ on:
         description: 'Version'
         required: true
         default: 'latest'
-  push:
-    tags:
-      - 'v*'
 jobs:
   build:
     name: Build image
