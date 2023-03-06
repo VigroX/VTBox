@@ -52,6 +52,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     needs: test
+    if: ${{ github.ref == 'refs/heads/main' }}
     strategy:
       matrix:
         node_version: [16.x]
