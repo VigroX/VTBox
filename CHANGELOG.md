@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/VigroX/VTBox/compare/v0.1.2...v0.2.0) (2023-03-06)
+
+
+### Features
+
+* **files:** add hash checker and encryption ([#7](https://github.com/VigroX/VTBox/issues/7)) ([a405774](https://github.com/VigroX/VTBox/commit/a405774ae92a2a7ac2a91c208e5ee4afcd69af13))
+
 ## [0.1.2](https://github.com/VigroX/VTBox/compare/v0.1.1...v0.1.2) (2023-03-05)
 
 
