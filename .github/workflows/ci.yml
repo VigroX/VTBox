@@ -11,6 +11,13 @@ on:
 
 jobs:
   test:
+    paths:
+      - 'src/**'
+      - 'cypress/**'
+      - 'pnpm-lock.yaml'
+      - '*.json'
+      - '*.yml'
+      - '*.js'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
